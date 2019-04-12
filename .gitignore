@@ -26,7 +26,6 @@
 
 
 ### Others ###
-HELP.md
-mvnw
-mvnw.cmd
-.mvn
+./HELP.md
+./mvnw
+./mvnw.cmd
