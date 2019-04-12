@@ -23,3 +23,10 @@
 /nbdist/
 /.nb-gradle/
 /build/
+
+
+### Others ###
+HELP.md
+mvnw
+mvnw.cmd
+.mvn
