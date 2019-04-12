@@ -24,11 +24,12 @@
         <javaClientGenerator targetPackage="com.hcven.community.mapper"
                              targetProject="src/main/java" type="XMLMAPPER"/>
 
-        <table schema="community" tableName="user"
+        <table schema="community" tableName="user_role"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="true"/>
         </table>
+
     </context>
 </generatorConfiguration>

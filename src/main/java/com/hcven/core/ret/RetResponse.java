@@ -1,5 +1,7 @@
 package com.hcven.core.ret;
 
+import com.hcven.community.data.common.RetCode;
+
 /**
  * @author zhanghao
  * @since 2019-03-14

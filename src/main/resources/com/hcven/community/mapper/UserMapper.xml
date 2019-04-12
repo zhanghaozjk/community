@@ -3,16 +3,16 @@
 <mapper namespace="com.hcven.community.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.hcven.community.data.User">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="phoneNumber" jdbcType="BIGINT" property="phoneNumber" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="followers" jdbcType="VARCHAR" property="followers" />
-    <result column="following" jdbcType="VARCHAR" property="following" />
+    <result column="createTime" jdbcType="DATE" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, phoneNumber, nickname, password, status, followers, following
+    id, username, password, email, phoneNumber, nickname, status, createTime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -20,17 +20,22 @@
     from user
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="getUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user
+    where username = #{username}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.hcven.community.data.User">
-    insert into user (id, phoneNumber, nickname, 
-      password, status, followers, 
-      following)
-    values (#{id,jdbcType=BIGINT}, #{phoneNumber,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{followers,jdbcType=VARCHAR}, 
-      #{following,jdbcType=VARCHAR})
+    insert into user (id, username, password, 
+      email, phoneNumber, nickname, 
+      status, createTime)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.hcven.community.data.User">
     insert into user
@@ -38,81 +43,91 @@
       <if test="id != null">
         id,
       </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
       <if test="phoneNumber != null">
         phoneNumber,
       </if>
       <if test="nickname != null">
         nickname,
       </if>
-      <if test="password != null">
-        password,
-      </if>
       <if test="status != null">
         status,
       </if>
-      <if test="followers != null">
-        followers,
-      </if>
-      <if test="following != null">
-        following,
+      <if test="createTime != null">
+        createTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="phoneNumber != null">
-        #{phoneNumber,jdbcType=BIGINT},
-      </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null">
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="followers != null">
-        #{followers,jdbcType=VARCHAR},
-      </if>
-      <if test="following != null">
-        #{following,jdbcType=VARCHAR},
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hcven.community.data.User">
     update user
     <set>
-      <if test="phoneNumber != null">
-        phoneNumber = #{phoneNumber,jdbcType=BIGINT},
-      </if>
-      <if test="nickname != null">
-        nickname = #{nickname,jdbcType=VARCHAR},
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null">
+        phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="followers != null">
-        followers = #{followers,jdbcType=VARCHAR},
-      </if>
-      <if test="following != null">
-        following = #{following,jdbcType=VARCHAR},
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=DATE},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hcven.community.data.User">
     update user
-    set phoneNumber = #{phoneNumber,jdbcType=BIGINT},
-      nickname = #{nickname,jdbcType=VARCHAR},
+    set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      followers = #{followers,jdbcType=VARCHAR},
-      following = #{following,jdbcType=VARCHAR}
+      createTime = #{createTime,jdbcType=DATE}
     where id = #{id,jdbcType=BIGINT}
   </update>
 

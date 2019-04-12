@@ -5,7 +5,6 @@ import com.hcven.core.ret.RetResponse;
 import com.hcven.core.ret.RetResult;
 import com.hcven.system.entity.Mail;
 import com.hcven.utils.ApplicationUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

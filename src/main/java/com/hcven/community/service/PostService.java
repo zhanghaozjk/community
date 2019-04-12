@@ -9,5 +9,11 @@ import java.util.List;
  * @since 2019-03-12
  */
 public interface PostService {
-    List<PostVO> getPosts();
+    /**
+     * 获得Post列表
+     * @return post视图
+     */
+    List<PostVO> listPost();
+
+
 }

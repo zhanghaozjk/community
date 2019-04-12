@@ -1,8 +1,13 @@
-package com.hcven.community.data;
+package com.hcven.community.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+/**
+ * @author zhanghao
+ * @since 2019-03-29
+ */
+public class UserSecureData implements Serializable {
     private Long id;
 
     private String username;
@@ -18,6 +23,10 @@ public class User {
     private Integer status;
 
     private Date createTime;
+
+    private String role;
+
+    private String permission;
 
     public Long getId() {
         return id;
@@ -81,5 +90,21 @@ public class User {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 }

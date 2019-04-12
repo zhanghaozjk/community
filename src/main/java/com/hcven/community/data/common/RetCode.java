@@ -1,4 +1,4 @@
-package com.hcven.core.ret;
+package com.hcven.community.data.common;
 
 /**
  * @author zhanghao
@@ -18,7 +18,9 @@ public enum RetCode {
     NOT_FOUND(404),
 
     // 服务器内部错误
-    INTERNAL_SERVER_ERROR(500);
+    INTERNAL_SERVER_ERROR(500),
+
+    OTHER_SERVER_ERROR(505);
 
     public int code;
 

@@ -1,6 +1,5 @@
 package com.hcven.community.service.impl;
 
-import com.hcven.community.data.User;
 import com.hcven.community.service.PostService;
 import com.hcven.community.vo.PostVO;
 import com.hcven.community.vo.UserVO;
@@ -19,7 +18,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     @Override
-    public List<PostVO> getPosts() {
+    public List<PostVO> listPost() {
         PostVO vo = new PostVO();
         UserVO userVO = new UserVO();
         userVO.setId(90001L);

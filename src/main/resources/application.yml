@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/community?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: zh1580
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.exmail.qq.com
+    username: service@hcven.cn
+    password: s2jCUR8QMNB5K5Qp
+    default-encoding: utf-8
+
+logging:
+#  config: ./log4j2-spring.xml
+  level:
+    com.hcven: trace
