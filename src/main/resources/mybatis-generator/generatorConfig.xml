@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!--数据库驱动-->
-    <classPathEntry
-            location="/Users/hc/.m2/repository/mysql/mysql-connector-java/5.1.41/mysql-connector-java-5.1.41.jar"/>
+    <classPathEntry location="src/main/resources/jdk/mysql-connector-java-5.1.41.jar"
+           />
     <context id="mysql" targetRuntime="MyBatis3">
         <!-- 开启注释 -->
         <commentGenerator>
