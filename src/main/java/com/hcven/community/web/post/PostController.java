@@ -4,6 +4,8 @@ import com.hcven.community.data.common.CommonRes;
 import com.hcven.community.service.PostService;
 import com.hcven.community.vo.PostVO;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @RestController
 public class PostController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private PostService postService;

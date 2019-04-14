@@ -2,6 +2,9 @@ package com.hcven.community.service;
 
 import com.hcven.community.data.User;
 import com.hcven.community.dto.UserSecureData;
+import com.hcven.community.vo.RegistVO;
+
+import java.util.Map;
 
 /**
  * @author zhanghao
@@ -10,18 +13,11 @@ import com.hcven.community.dto.UserSecureData;
 public interface UserService {
 
     /**
-     * 验证邮箱注册额
+     * 验证邮箱注册
      * @param email
      * @return
      */
-    Boolean checkEmailExist(String email);
-
-    /**
-     * 用户登录
-     * @param user
-     * @return
-     */
-    Boolean login(User user);
+    Map<String, Object> checkEmailExist(String email);
 
     /**
      * 通过username 获得user
@@ -36,4 +32,25 @@ public interface UserService {
      * @return
      */
     String tokenUpdate(String token);
+
+    /**
+     * 邮箱注册
+     * @param registVO
+     * @return
+     */
+    RegistVO emailRegist(RegistVO registVO);
+
+    /**
+     * 邮箱注册验证-发送code
+     * @param registVO
+     * @return
+     */
+    RegistVO emailRegisterSend(RegistVO registVO);
+
+    /**
+     * 邮箱验证code
+     * @param registVO
+     * @return
+     */
+    Map<String, Object> emailCodeVerify(RegistVO registVO);
 }

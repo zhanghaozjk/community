@@ -1,4 +1,4 @@
-package com.hcven.system.mail;
+package com.hcven.community.web.mail;
 
 import com.hcven.core.constant.MailConstant;
 import com.hcven.core.ret.RetResponse;
@@ -33,21 +33,21 @@ public class MailController {
      * @throws Exception
      */
     @GetMapping(value = "/sendTemplateMail")
-    public RetResult<String> sendTemplateMail(String mailTo) throws Exception {
-        Mail mail = new Mail();
-        String[] to = {mailTo};
-        String identifyCode = ApplicationUtils.getNumStringRandom(6);
-        mail.setSubject(MailConstant.TEMPLATE_SUBJECT);
-        mail.setTemplateName(MailConstant.REGISTER_TEMPLATE);
-        Map<String,String> map = new HashMap<>(16);
-        map.put("identifyCode",identifyCode);
-        map.put("to", mailTo);
-        mail.setTemplateModel(map);
-        mail.setTo(to);
-        mailService.sendTemplateMail(mail);
-
-        return RetResponse.makeOKRsp(identifyCode);
-    }
+//    public RetResult<String> sendTemplateMail(String mailTo) throws Exception {
+//        Mail mail = new Mail();
+//        String[] to = {mailTo};
+//        String identifyCode = ApplicationUtils.getNumStringRandom(6);
+//        mail.setSubject(MailConstant.TEMPLATE_SUBJECT);
+//        mail.setTemplateName(MailConstant.REGISTER_TEMPLATE);
+//        Map<String,String> map = new HashMap<>(16);
+//        map.put("identifyCode",identifyCode);
+//        map.put("to", mailTo);
+//        mail.setTemplateModel(map);
+//        mail.setTo(to);
+//        mailService.sendTemplateMail(mail);
+//
+//        return RetResponse.makeOKRsp(identifyCode);
+//    }
 
     @PostMapping("/sendAttachmentsMail")
     public RetResult<String> sendAttachmentsMail(Mail mail, HttpServletRequest request) throws Exception {

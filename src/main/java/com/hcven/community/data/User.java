@@ -19,6 +19,8 @@ public class User {
 
     private Date createTime;
 
+    private String verifyCode;
+
     public Long getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class User {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
     }
 }

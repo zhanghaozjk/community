@@ -1,6 +1,7 @@
 package com.hcven.identify;
 
 import com.hcven.community.data.common.CommonRes;
+import com.hcven.system.exception.ServerException;
 import com.hcven.system.exception.UnauthorizedException;
 import org.apache.shiro.ShiroException;
 
@@ -37,6 +38,12 @@ public class ExceptionController {
     @ExceptionHandler(UnauthorizedException.class)
     public CommonRes handle401() {
         return new CommonRes(401, "Unauthorized", null);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ServerException.class)
+    public CommonRes handle500(ServerException e) {
+        return new CommonRes(500, e.getMessage(), null);
     }
 
     /**

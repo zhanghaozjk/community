@@ -1,8 +1,8 @@
-package com.hcven.system.mail.impl;
+package com.hcven.community.web.mail.impl;
 
 import com.hcven.system.entity.Mail;
 import com.hcven.core.constant.MailConstant;
-import com.hcven.system.mail.MailService;
+import com.hcven.community.web.mail.MailService;
 import com.hcven.utils.UploadActionUtil;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;

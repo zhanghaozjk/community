@@ -10,20 +10,16 @@
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="createTime" jdbcType="DATE" property="createTime" />
+    <result column="verifyCode" jdbcType="VARCHAR" property="verifyCode" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, password, email, phoneNumber, nickname, status, createTime
+    id, username, password, email, phoneNumber, nickname, status, createTime, verifyCode
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user
     where id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="getUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from user
-    where username = #{username}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user
@@ -32,10 +28,12 @@
   <insert id="insert" parameterType="com.hcven.community.data.User">
     insert into user (id, username, password, 
       email, phoneNumber, nickname, 
-      status, createTime)
+      status, createTime, verifyCode
+      )
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=DATE})
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}, #{verifyCode,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hcven.community.data.User">
     insert into user
@@ -64,6 +62,9 @@
       <if test="createTime != null">
         createTime,
       </if>
+      <if test="verifyCode != null">
+        verifyCode,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -89,6 +90,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=DATE},
+      </if>
+      <if test="verifyCode != null">
+        #{verifyCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -116,6 +120,9 @@
       <if test="createTime != null">
         createTime = #{createTime,jdbcType=DATE},
       </if>
+      <if test="verifyCode != null">
+        verifyCode = #{verifyCode,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -127,10 +134,15 @@
       phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      createTime = #{createTime,jdbcType=DATE}
+      createTime = #{createTime,jdbcType=DATE},
+      verifyCode = #{verifyCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
+  <select id="getUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user
+    where username = #{username}
+  </select>
   <select id="checkEmailExists" parameterType="java.lang.String" resultType="java.lang.Integer">
     select count(id) from `user` where `email` = #{email}
   </select>

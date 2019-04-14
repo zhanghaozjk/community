@@ -1,4 +1,4 @@
-package com.hcven.system.mail;
+package com.hcven.community.web.mail;
 
 import com.hcven.system.entity.Mail;
 

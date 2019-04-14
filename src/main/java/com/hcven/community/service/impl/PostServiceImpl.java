@@ -3,6 +3,8 @@ package com.hcven.community.service.impl;
 import com.hcven.community.service.PostService;
 import com.hcven.community.vo.PostVO;
 import com.hcven.community.vo.UserVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public List<PostVO> listPost() {

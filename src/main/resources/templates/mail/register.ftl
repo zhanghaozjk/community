@@ -5,8 +5,8 @@
 <body>
 <div><span>尊敬的</span>${to}:</div>
 <div>
-    <span>欢迎您加入初晨，您的验证码为：
-        <span style="color: red;">${identifyCode}</span>
+    <span>欢迎您加入宠物社区，您的验证码为：<br/>
+        <span style="color: red; font-size: 30px">${identifyCode}</span>
     </span>
 </div>
 <span style="margin-top: 100px">HCVEN®️ 2019</span>

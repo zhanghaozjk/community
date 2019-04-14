@@ -28,6 +28,8 @@ public class UserSecureData implements Serializable {
 
     private String permission;
 
+    private String verifyCode;
+
     public Long getId() {
         return id;
     }
@@ -106,5 +108,13 @@ public class UserSecureData implements Serializable {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
     }
 }
