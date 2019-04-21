@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="com.hcven.community.data.Post">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="date" jdbcType="TIMESTAMP" property="date" />
-    <result column="userId" jdbcType="BIGINT" property="userId" />
-    <result column="unVisibleId" jdbcType="VARCHAR" property="unVisibleId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="unVisible" jdbcType="VARCHAR" property="unVisible" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="images" jdbcType="VARCHAR" property="images" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, date, userId, unVisibleId, content, images, status
+    id, date, username, unVisible, content, images, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -19,16 +19,40 @@
     from post
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="listPost" resultMap="BaseResultMap" parameterType="HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from post
+    where 1=1
+    <if test="status != null">
+      and status = #{status,jdbcType=BIGINT}
+    </if>
+    <if test="username != null">
+      and username = #{username,jdbcType=VARCHAR}
+    </if>
+    limit #{start,jdbcType=BIGINT}, #{count,jdbcType=INTEGER}
+  </select>
+  <select id="countPost" resultType="Integer">
+    select count(id)
+    from post
+    where 1=1
+    <if test="status != null">
+      and status = #{status,jdbcType=BIGINT}
+    </if>
+    <if test="username != null">
+      and username = #{username,jdbcType=VARCHAR}
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from post
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.hcven.community.data.Post">
-    insert into post (id, date, userId, 
-      unVisibleId, content, images, 
+    insert into post (id, date, username,
+      unVisible, content, images,
       status)
-    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
-      #{unVisibleId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
+      #{unVisible,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR},
       #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.hcven.community.data.Post">
@@ -40,11 +64,11 @@
       <if test="date != null">
         date,
       </if>
-      <if test="userId != null">
-        userId,
+      <if test="username != null">
+        username,
       </if>
-      <if test="unVisibleId != null">
-        unVisibleId,
+      <if test="unVisible != null">
+        unVisible,
       </if>
       <if test="content != null">
         content,
@@ -63,11 +87,11 @@
       <if test="date != null">
         #{date,jdbcType=TIMESTAMP},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
-      <if test="unVisibleId != null">
-        #{unVisibleId,jdbcType=VARCHAR},
+      <if test="unVisible != null">
+        #{unVisible,jdbcType=VARCHAR},
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
@@ -86,11 +110,11 @@
       <if test="date != null">
         date = #{date,jdbcType=TIMESTAMP},
       </if>
-      <if test="userId != null">
-        userId = #{userId,jdbcType=BIGINT},
+      <if test="username != null">
+        username = #{username,jdbcType=BIGINT},
       </if>
-      <if test="unVisibleId != null">
-        unVisibleId = #{unVisibleId,jdbcType=VARCHAR},
+      <if test="unVisible != null">
+        unVisible = #{unVisible,jdbcType=VARCHAR},
       </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
@@ -107,8 +131,8 @@
   <update id="updateByPrimaryKey" parameterType="com.hcven.community.data.Post">
     update post
     set date = #{date,jdbcType=TIMESTAMP},
-      userId = #{userId,jdbcType=BIGINT},
-      unVisibleId = #{unVisibleId,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      unVisible = #{unVisible,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       images = #{images,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER}

@@ -165,6 +165,7 @@ public class UserServiceImpl implements UserService {
         data.setEmail(user.getEmail());
         data.setVerifyCode(user.getVerifyCode());
         data.setStatus(user.getStatus());
+        data.setNickname(user.getNickname());
         if (role != null) {
             data.setRole(role.getRole());
             data.setPermission(role.getPermission());

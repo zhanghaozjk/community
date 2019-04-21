@@ -15,7 +15,7 @@ public class PostVO {
     /**
      * 发表日期
      */
-    private Date date;
+    private String date;
     /**
      * 用户
      */
@@ -23,7 +23,7 @@ public class PostVO {
     /**
      * 可见列表
      */
-    private List<Long> unVisibleId;
+    private List<Long> unVisible;
     /**
      * 内容
      */
@@ -45,11 +45,11 @@ public class PostVO {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -62,11 +62,11 @@ public class PostVO {
     }
 
     public List<Long> getUnVisibleId() {
-        return unVisibleId;
+        return unVisible;
     }
 
-    public void setUnVisibleId(List<Long> unVisibleId) {
-        this.unVisibleId = unVisibleId;
+    public void setUnVisibleId(List<Long> unVisible) {
+        this.unVisible = unVisible;
     }
 
     public String getContent() {

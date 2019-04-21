@@ -30,6 +30,9 @@ public class CommonRes {
     public static CommonRes retOk() {
         return new CommonRes(200, null, null);
     }
+    public static CommonRes retOk(Object data) {
+        return new CommonRes(200, null, data);
+    }
 
     public int getCode() {
         return code;

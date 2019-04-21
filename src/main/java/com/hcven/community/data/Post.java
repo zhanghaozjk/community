@@ -7,9 +7,9 @@ public class Post {
 
     private Date date;
 
-    private Long userId;
+    private String username;
 
-    private String unVisibleId;
+    private String unVisible;
 
     private String content;
 
@@ -33,20 +33,20 @@ public class Post {
         this.date = date;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getUnVisibleId() {
-        return unVisibleId;
+        return unVisible;
     }
 
-    public void setUnVisibleId(String unVisibleId) {
-        this.unVisibleId = unVisibleId;
+    public void setUnVisibleId(String unVisible) {
+        this.unVisible = unVisible;
     }
 
     public String getContent() {
