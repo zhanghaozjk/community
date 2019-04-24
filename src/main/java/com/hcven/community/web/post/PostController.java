@@ -4,9 +4,7 @@ import com.hcven.community.data.common.CommonRes;
 import com.hcven.community.service.PostService;
 import com.hcven.community.vo.PostVO;
 import com.hcven.system.exception.ServerException;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +38,10 @@ public class PostController {
                               @RequestParam(value = "count", required = false) Integer count,
                               @RequestParam(value = "username", required = false) String username) {
         CommonRes res = CommonRes.retOk();
-        res.setData(postService.listPost(start, count, username));
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("postVoList", postService.listPost(start, count, username));
+        map.put("count", postService.countPost(username));
+        res.setData(map);
         return res;
     }
 

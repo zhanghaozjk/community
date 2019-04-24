@@ -34,6 +34,10 @@ public class CommonRes {
         return new CommonRes(200, null, data);
     }
 
+    public static CommonRes message(String msg) {
+        return new CommonRes(200, msg, null);
+    }
+
     public int getCode() {
         return code;
     }

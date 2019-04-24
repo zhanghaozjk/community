@@ -17,5 +17,5 @@ public class UserApiConsts {
     public static final String COMMUNITY_EXPORT_API_USER_EMAIL_REGISTER = "/community/export/api/user/email/register";
     public static final String COMMUNITY_EXPORT_API_USER_EMAIL_REGISTER_SEND_CODE = "/community/export/api/user/email/register/send/code";
     public static final String COMMUNITY_EXPORT_API_USER_EMAIL_REGISTER_VERIFY = "/community/export/api/user/email/register/verify";
-    //todo 注册接口 邮箱登陆接口
+    public static final String COMMUNITY_EXPORT_API_USER_LOGOUT = "/community/export/api/user/logout";
 }

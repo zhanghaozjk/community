@@ -30,6 +30,7 @@
     <if test="username != null">
       and username = #{username,jdbcType=VARCHAR}
     </if>
+    order by `id` desc
     limit #{start,jdbcType=BIGINT}, #{count,jdbcType=INTEGER}
   </select>
   <select id="countPost" resultType="Integer">

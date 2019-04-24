@@ -74,6 +74,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Integer countPost(String username) {
+        Map<String, Object> params = new HashMap<>(4);
+        params.put("status", PostStatus.NORMAL);
+        params.put("username", username);
+
+        return postMapper.countPost(params);
+    }
+
+
+    @Override
     public Boolean addPost(PostVO postVO) {
         if (postVO == null || SessionUtils.getUsername() == null) {
             return false;

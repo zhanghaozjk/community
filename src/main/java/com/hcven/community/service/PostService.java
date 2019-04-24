@@ -21,6 +21,13 @@ public interface PostService {
     List<PostVO> listPost(Long start, Integer count, String username);
 
     /**
+     * list查询的时候，返回总数来分页
+     * @param username 如果不为null，则查询某个人
+     * @return
+     */
+    Integer countPost(String username);
+
+    /**
      * 新增一条post
      * @param post
      * @return

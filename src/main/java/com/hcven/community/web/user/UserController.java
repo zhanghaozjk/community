@@ -8,6 +8,8 @@ import com.hcven.community.vo.RegistVO;
 import com.hcven.system.exception.ServerException;
 import com.hcven.system.exception.UnauthorizedException;
 import com.hcven.utils.JWTUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,14 @@ public class UserController {
     public CommonRes checkEmailExists(@RequestBody EmailVO email) {
         return new CommonRes(HttpStatus.OK.value(), "check email",
                 userService.checkEmailExist(email.getEmail()));
+    }
+
+    @PostMapping(value = UserApiConsts.COMMUNITY_EXPORT_API_USER_LOGOUT)
+    public CommonRes logout() {
+        Subject subject = SecurityUtils.getSubject();
+        //注销
+        subject.logout();
+        return CommonRes.message("logout");
     }
 
     @PostMapping(value = UserApiConsts.COMMUNITY_EXPORT_API_USER_LOGIN)
