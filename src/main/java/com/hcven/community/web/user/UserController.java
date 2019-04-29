@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,8 +95,12 @@ public class UserController {
         if (regist == null) {
             return new CommonRes(400, "Un-expect param", null);
         } else {
-            RegistVO newUser = userService.emailRegist(regist);
-            return new CommonRes(HttpStatus.OK.value(), regist.getEmail(), newUser);
+            try {
+                RegistVO newUser = userService.emailRegister(regist);
+                return new CommonRes(HttpStatus.OK.value(), regist.getEmail(), newUser);
+            } catch (ServerException e) {
+                return new CommonRes(HttpStatus.OK.value(), e.getMessage(), null);
+            }
         }
     }
 

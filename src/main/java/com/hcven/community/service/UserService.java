@@ -38,7 +38,7 @@ public interface UserService {
      * @param registVO
      * @return
      */
-    RegistVO emailRegist(RegistVO registVO);
+    RegistVO emailRegister(RegistVO registVO);
 
     /**
      * 邮箱注册验证-发送code

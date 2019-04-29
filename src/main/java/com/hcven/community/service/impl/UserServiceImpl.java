@@ -123,8 +123,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RegistVO emailRegist(RegistVO registVO) {
+    public RegistVO emailRegister(RegistVO registVO) {
         User user = convertRegistVO2User(registVO);
+        Map<String, Object> map = checkEmailExist(registVO.getEmail());
+        if ((Boolean) map.get("exist")) {
+            throw new ServerException("email exists");
+        }
         int count;
         if (user != null) {
             user.setStatus(UserApiConsts.UserStatus.USER_NEED_VERIFY_EMAIL);
