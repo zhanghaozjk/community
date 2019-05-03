@@ -48,7 +48,7 @@
     delete from post
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.hcven.community.data.Post">
+  <insert id="insert" parameterType="com.hcven.community.data.Post" useGeneratedKeys="true" keyProperty="id">
     insert into post (id, date, username,
       unVisible, content, images,
       status)

@@ -64,4 +64,12 @@ public class PostController {
         Map<String, Object> data = postService.deletePost(postId);
         return CommonRes.retOk(data);
     }
+
+    @PostMapping(value = PostApiConsts.COMMUNITY_API_POST_LIKE_POST)
+    @RequiresAuthentication
+    public CommonRes likePost(@RequestParam("id")Long postId) {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("success", postService.userLikePost(postId));
+        return CommonRes.retOk(data);
+    }
 }

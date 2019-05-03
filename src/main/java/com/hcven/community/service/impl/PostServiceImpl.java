@@ -1,6 +1,8 @@
 package com.hcven.community.service.impl;
 
+import com.hcven.community.dao.PostDAO;
 import com.hcven.community.data.Post;
+import com.hcven.community.data.PostLike;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.mapper.PostMapper;
 import com.hcven.community.service.PostService;
@@ -36,9 +38,13 @@ public class PostServiceImpl implements PostService {
 
     private final UserService userService;
 
+    private final PostDAO postDAO;
+
+
     @Autowired
-    public PostServiceImpl(PostMapper postMapper, UserService userService) {this.postMapper = postMapper;
+    public PostServiceImpl(PostMapper postMapper, UserService userService, PostDAO postDAO) {this.postMapper = postMapper;
         this.userService = userService;
+        this.postDAO = postDAO;
     }
 
     private static class PostStatus {
@@ -97,6 +103,9 @@ public class PostServiceImpl implements PostService {
                 postMapper.updateByPrimaryKeySelective(post);
             } else {
                 postMapper.insert(post);
+                PostLike postLike = new PostLike();
+                postLike.setPostId(post.getId());
+                postDAO.createPostLike(postLike);
             }
         } catch (Exception e) {
             String message = String.format("User %s adding or updating a post error", username);
@@ -131,6 +140,18 @@ public class PostServiceImpl implements PostService {
             map.put("success", true);
         }
         return map;
+    }
+
+    @Override
+    public Boolean userLikePost(Long postId) {
+        UserSecureData user = userService.getUser(SessionUtils.getUsername());
+        try {
+            postDAO.savePostLike(postId, user.getId());
+        } catch (Exception e) {
+            logger.error("user " + user.getUsername() + " like post error " + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     private UserVO postGetUserDetail(String username) {

@@ -40,4 +40,11 @@ public interface PostService {
      * @return
      */
     Map<String, Object> deletePost(Long id);
+
+    /**
+     * 用户点赞
+     * @param postId
+     * @return
+     */
+    Boolean userLikePost(Long postId);
 }
