@@ -2,6 +2,7 @@ package com.hcven.community.web.user;
 
 import com.hcven.community.data.common.CommonRes;
 import com.hcven.community.dto.UserSecureData;
+import com.hcven.community.service.PostService;
 import com.hcven.community.service.UserService;
 import com.hcven.community.vo.EmailVO;
 import com.hcven.community.vo.RegistVO;
@@ -9,6 +10,7 @@ import com.hcven.system.exception.ServerException;
 import com.hcven.system.exception.UnauthorizedException;
 import com.hcven.utils.JWTUtil;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,6 +103,14 @@ public class UserController {
                 return new CommonRes(HttpStatus.OK.value(), e.getMessage(), null);
             }
         }
+    }
+
+    @PostMapping(value = UserApiConsts.COMMUNITY_API_USER_MINE_DETAIL_GET)
+    @RequiresAuthentication
+    public CommonRes userDetails(@RequestParam(value = "username", required = false)String username) {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("mineUserVO", userService.getMineUserDetail(username));
+        return CommonRes.retOk(data);
     }
 
     @PostMapping(value = UserApiConsts.COMMUNITY_EXPORT_API_USER_EMAIL_REGISTER_SEND_CODE)

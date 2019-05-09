@@ -49,4 +49,12 @@ public class ApplicationUtils {
         }
         return date;
     }
+
+    public static Long strFormattingLong(String num) {
+        try {
+            return Long.valueOf(num);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 }

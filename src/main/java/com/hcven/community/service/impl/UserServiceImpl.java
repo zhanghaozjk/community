@@ -1,11 +1,14 @@
 package com.hcven.community.service.impl;
 
+import com.hcven.community.dao.UserFollowDAO;
 import com.hcven.community.data.User;
 import com.hcven.community.data.UserRole;
 import com.hcven.community.dto.UserSecureData;
+import com.hcven.community.mapper.PostMapper;
 import com.hcven.community.mapper.UserMapper;
 import com.hcven.community.mapper.UserRoleMapper;
 import com.hcven.community.service.UserService;
+import com.hcven.community.vo.MineUserVO;
 import com.hcven.community.vo.RegistVO;
 import com.hcven.community.web.mail.MailService;
 import com.hcven.community.web.user.UserApiConsts;
@@ -14,6 +17,7 @@ import com.hcven.system.entity.Mail;
 import com.hcven.system.exception.ServerException;
 import com.hcven.utils.ApplicationUtils;
 import com.hcven.utils.JWTUtil;
+import com.hcven.utils.SessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +40,16 @@ public class UserServiceImpl implements UserService {
 
     private final MailService mailService;
 
+    private final PostMapper postMapper;
+
+    private final UserFollowDAO userFollowDAO;
+
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, UserRoleMapper userRoleMapper, MailService mailService) {this.userMapper = userMapper;
+    public UserServiceImpl(UserMapper userMapper, UserRoleMapper userRoleMapper, MailService mailService, PostMapper postMapper, UserFollowDAO userFollowDAO) {this.userMapper = userMapper;
         this.userRoleMapper = userRoleMapper;
         this.mailService = mailService;
+        this.postMapper = postMapper;
+        this.userFollowDAO = userFollowDAO;
     }
 
     /**
@@ -97,6 +107,30 @@ public class UserServiceImpl implements UserService {
             map.put("verify", false);
         }
         return map;
+    }
+
+    @Override
+    public MineUserVO getMineUserDetail(String username) {
+        if (username == null) {
+            username = SessionUtils.getUsername();
+        }
+        MineUserVO userVO = new MineUserVO();
+        UserSecureData user = getUser(username);
+        // nickname
+        userVO.setNickname(user.getNickname());
+        Map<String, Object> postQueryMap = new HashMap<>(4);
+        postQueryMap.put("username", username);
+        postQueryMap.put("status", PostServiceImpl.PostStatus.NORMAL);
+        Integer postCount = postMapper.countPost(postQueryMap);
+        // postCount
+        userVO.setPostCount(postCount);
+        // followers count
+        userVO.setFollowersCount(userFollowDAO.getFollowerCount(user.getId()));
+        // following count
+        userVO.setFollowingCount(userFollowDAO.getFollowingCount(user.getId()));
+        // todo description
+
+        return userVO;
     }
 
     @Override

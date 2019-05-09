@@ -1,7 +1,7 @@
 package com.hcven.community.service;
 
-import com.hcven.community.data.User;
 import com.hcven.community.dto.UserSecureData;
+import com.hcven.community.vo.MineUserVO;
 import com.hcven.community.vo.RegistVO;
 
 import java.util.Map;
@@ -53,4 +53,11 @@ public interface UserService {
      * @return
      */
     Map<String, Object> emailCodeVerify(RegistVO registVO);
+
+    /**
+     * 查看用户详情页的信息
+     * @param username 用户名 为null则为查询自己
+     * @return
+     */
+    MineUserVO getMineUserDetail(String username);
 }

@@ -47,7 +47,7 @@ public class PostServiceImpl implements PostService {
         this.postDAO = postDAO;
     }
 
-    private static class PostStatus {
+    static class PostStatus {
         static Integer NORMAL = 1;
         static Integer DELETE = 0;
     }
