@@ -17,6 +17,7 @@ public class ApplicationUtils {
     private final static Logger logger = LoggerFactory.getLogger(ApplicationUtils.class);
 
     private static final String YMD_FORMAT = "yyyy-MM-dd";
+    private static final String YMDHMS_FORMAT = "yyyy-MM-dd HH:mm:SS";
     /**
      * 生成一个count长的字符串
      * @param count 字符串长度
@@ -34,6 +35,10 @@ public class ApplicationUtils {
     public static String getYMD(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(YMD_FORMAT);
         return date == null ? null : dateFormat.format(date);
+    }
+
+    public static Date getCurrentDateYMDHMS() {
+        return new Date(System.currentTimeMillis());
     }
 
     public static Date ymdGetDate(String ymd) {

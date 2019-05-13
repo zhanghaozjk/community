@@ -1,5 +1,6 @@
 package com.hcven.community.service;
 
+import com.hcven.community.data.PostComment;
 import com.hcven.community.vo.PostVO;
 
 import java.util.List;
@@ -47,4 +48,19 @@ public interface PostService {
      * @return
      */
     Boolean userLikePost(Long postId);
+
+    /**
+     * 获得带有id的所有comment
+     * @param postId postId
+     * @return
+     */
+    PostComment getPostComment(Long postId);
+
+    /**
+     * 添加一条comment
+     * @param postId
+     * @param content
+     * @return 成功 失败
+     */
+    Boolean addPostComment(Long postId, String content);
 }

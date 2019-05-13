@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -131,6 +132,16 @@ public class UserServiceImpl implements UserService {
         // todo description
 
         return userVO;
+    }
+
+    @Override
+    public String userGetNicknameByUserId(Long userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user != null && !StringUtils.isEmpty(user.getNickname())) {
+            return user.getNickname();
+        } else {
+            return "匿名用户";
+        }
     }
 
     @Override

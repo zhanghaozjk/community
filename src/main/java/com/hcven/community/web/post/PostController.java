@@ -1,5 +1,6 @@
 package com.hcven.community.web.post;
 
+import com.hcven.community.data.Comment;
 import com.hcven.community.data.common.CommonRes;
 import com.hcven.community.service.PostService;
 import com.hcven.community.vo.PostVO;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,6 +73,23 @@ public class PostController {
     public CommonRes likePost(@RequestParam("id")Long postId) {
         Map<String, Object> data = new HashMap<>(4);
         data.put("success", postService.userLikePost(postId));
+        return CommonRes.retOk(data);
+    }
+
+    @GetMapping(value = PostApiConsts.COMMUNITY_API_POST_COMMENT_GET)
+    @RequiresAuthentication
+    public CommonRes getComment(@PathVariable(value = "id") Long postId) {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("postComment", postService.getPostComment(postId));
+        return CommonRes.retOk(data);
+    }
+
+    @PutMapping(value = PostApiConsts.COMMUNITY_API_POST_COMMENT_ADD)
+    @RequiresAuthentication
+    public CommonRes addComment(@RequestParam("postId") Long postId, @RequestParam("comment") String comment) {
+        Boolean success = postService.addPostComment(postId, comment);
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("success", success);
         return CommonRes.retOk(data);
     }
 }

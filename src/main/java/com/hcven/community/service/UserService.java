@@ -60,4 +60,11 @@ public interface UserService {
      * @return
      */
     MineUserVO getMineUserDetail(String username);
+
+    /**
+     * 通过id获取昵称
+     * @param userId
+     * @return
+     */
+    String userGetNicknameByUserId(Long userId);
 }

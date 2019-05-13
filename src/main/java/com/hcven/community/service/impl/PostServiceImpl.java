@@ -1,7 +1,9 @@
 package com.hcven.community.service.impl;
 
 import com.hcven.community.dao.PostDAO;
+import com.hcven.community.data.Comment;
 import com.hcven.community.data.Post;
+import com.hcven.community.data.PostComment;
 import com.hcven.community.data.PostLike;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.mapper.PostMapper;
@@ -105,7 +107,11 @@ public class PostServiceImpl implements PostService {
                 postMapper.insert(post);
                 PostLike postLike = new PostLike();
                 postLike.setPostId(post.getId());
+                PostComment postComment = new PostComment();
+                postComment.setPostId(post.getId());
+                postComment.setComment(new ArrayList<>());
                 postDAO.createPostLike(postLike);
+                postDAO.createPostComment(postComment);
             }
         } catch (Exception e) {
             String message = String.format("User %s adding or updating a post error", username);
@@ -149,6 +155,35 @@ public class PostServiceImpl implements PostService {
             postDAO.savePostLike(postId, user.getId());
         } catch (Exception e) {
             logger.error("user " + user.getUsername() + " like post error " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public PostComment getPostComment(Long postId) {
+        PostComment postComment = postDAO.getPostComment(postId);
+        // 更新一遍nickname
+        for (Comment comment : postComment.getComment()) {
+            comment.setNickname(userService.userGetNicknameByUserId(comment.getUserId()));
+        }
+        return postComment;
+    }
+
+
+    @Override
+    public Boolean addPostComment(Long postId, String content) {
+        Comment comment = new Comment();
+        String username = SessionUtils.getUsername();
+        UserSecureData userSecureData = userService.getUser(username);
+        comment.setPostId(postId);
+        comment.setDate(ApplicationUtils.getCurrentDateYMDHMS());
+        comment.setUserId(userSecureData.getId());
+        comment.setContent(content);
+        try {
+            postDAO.savePostComment(comment);
+        } catch (Exception e) {
+            logger.error("error at adding comment " + content);
             return false;
         }
         return true;
