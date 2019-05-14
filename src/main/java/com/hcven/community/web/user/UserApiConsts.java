@@ -19,4 +19,5 @@ public class UserApiConsts {
     public static final String COMMUNITY_EXPORT_API_USER_EMAIL_REGISTER_VERIFY = "/community/export/api/user/email/register/verify";
     public static final String COMMUNITY_EXPORT_API_USER_LOGOUT = "/community/export/api/user/logout";
     public static final String COMMUNITY_API_USER_MINE_DETAIL_GET = "/community/api/user/mine/detail/get";
+    public static final String COMMUNITY_API_USER_INFORMATION = "/community/api/user/mine/information";
 }

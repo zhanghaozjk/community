@@ -3,6 +3,7 @@ package com.hcven.community.service;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.vo.MineUserVO;
 import com.hcven.community.vo.RegistVO;
+import com.hcven.community.vo.UserInformationVO;
 
 import java.util.Map;
 
@@ -67,4 +68,18 @@ public interface UserService {
      * @return
      */
     String userGetNicknameByUserId(Long userId);
+
+    /**
+     * 仅允许更新用户自己的信息
+     * @param informationVO
+     * @return
+     */
+    Boolean userInformationUpdate(UserInformationVO informationVO);
+
+    /**
+     * 获取用户的详情信息
+     * @param username
+     * @return
+     */
+    UserInformationVO userInformationGet(String username);
 }

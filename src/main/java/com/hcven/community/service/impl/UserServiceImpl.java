@@ -3,13 +3,16 @@ package com.hcven.community.service.impl;
 import com.hcven.community.dao.UserFollowDAO;
 import com.hcven.community.data.User;
 import com.hcven.community.data.UserRole;
+import com.hcven.community.data.UserTag;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.mapper.PostMapper;
 import com.hcven.community.mapper.UserMapper;
 import com.hcven.community.mapper.UserRoleMapper;
+import com.hcven.community.mapper.UserTagMapper;
 import com.hcven.community.service.UserService;
 import com.hcven.community.vo.MineUserVO;
 import com.hcven.community.vo.RegistVO;
+import com.hcven.community.vo.UserInformationVO;
 import com.hcven.community.web.mail.MailService;
 import com.hcven.community.web.user.UserApiConsts;
 import com.hcven.core.constant.MailConstant;
@@ -45,12 +48,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserFollowDAO userFollowDAO;
 
+    private final UserTagMapper userTagMapper;
+
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, UserRoleMapper userRoleMapper, MailService mailService, PostMapper postMapper, UserFollowDAO userFollowDAO) {this.userMapper = userMapper;
+    public UserServiceImpl(UserMapper userMapper, UserRoleMapper userRoleMapper, MailService mailService, PostMapper postMapper, UserFollowDAO userFollowDAO, UserTagMapper userTagMapper) {this.userMapper = userMapper;
         this.userRoleMapper = userRoleMapper;
         this.mailService = mailService;
         this.postMapper = postMapper;
         this.userFollowDAO = userFollowDAO;
+        this.userTagMapper = userTagMapper;
     }
 
     /**
@@ -145,6 +151,74 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean userInformationUpdate(UserInformationVO informationVO) {
+        if (informationVO == null) {
+            return false;
+        }
+        User user = userMapper.getUserByUsername(SessionUtils.getUsername());
+        if (user != null) {
+            if (StringUtils.isEmpty(informationVO.getNickname())) {
+                updateNickname(user, informationVO.getNickname());
+            }
+            UserTag userTag = userTagMapper.selectByUserId(user.getId());
+            if (userTag == null) {
+                userTag = insertUserTagIfNotExistsRecord(user.getId());
+            }
+            userTag.setCatWeight(informationVO.getCatWeight());
+            userTag.setDogWeight(informationVO.getDogWeight());
+            if (informationVO.getOtherWeight() != null && informationVO.getOtherWeight() != 0) {
+                userTag.setOtherWeight(informationVO.getOtherWeight());
+            } else {
+                userTag.setOtherWeight(50);
+            }
+            userTagMapper.updateByPrimaryKeySelective(userTag);
+            return true;
+        }
+        return false;
+    }
+
+    private void updateNickname(User user, String nickname) {
+        if (user != null && !StringUtils.isEmpty(nickname) && !user.getNickname().equals(nickname)) {
+            User updateUser = new User();
+            updateUser.setId(user.getId());
+            updateUser.setNickname(nickname);
+            userMapper.updateByPrimaryKeySelective(updateUser);
+        }
+    }
+
+    private UserTag insertUserTagIfNotExistsRecord(Long userId) {
+        // 冷启动更新
+        UserTag userTag = new UserTag();
+        userTag.setUserId(userId);
+        userTag.setCatWeight(50);
+        userTag.setDogWeight(50);
+        userTag.setOtherWeight(0);
+        userTagMapper.insert(userTag);
+        return userTag;
+    }
+
+    @Override
+    public UserInformationVO userInformationGet(String username) {
+        if (StringUtils.isEmpty(username)) {
+            username = SessionUtils.getUsername();
+        }
+        User user = userMapper.getUserByUsername(username);
+        UserInformationVO informationVO = null;
+        if (user != null) {
+            informationVO = new UserInformationVO();
+            informationVO.setNickname(user.getNickname());
+            UserTag userTag = userTagMapper.selectByUserId(user.getId());
+            if (userTag == null) {
+                userTag = insertUserTagIfNotExistsRecord(user.getId());
+            }
+            informationVO.setCatWeight(userTag.getCatWeight());
+            informationVO.setDogWeight(userTag.getDogWeight());
+            informationVO.setOtherWeight(userTag.getOtherWeight());
+        }
+        return informationVO;
+    }
+
+    @Override
     public UserSecureData getUser(String username) {
         User user = userMapper.getUserByUsername(username);
         UserRole role = null;
@@ -176,7 +250,10 @@ public class UserServiceImpl implements UserService {
         }
         int count;
         if (user != null) {
+            user.setCreateTime(ApplicationUtils.getCurrentDateYMDHMS());
             user.setStatus(UserApiConsts.UserStatus.USER_NEED_VERIFY_EMAIL);
+            // 随机一个username
+            user.setNickname("user_" + ApplicationUtils.getNumStringRandom(4));
             try {
                 user.setVerifyCode(ApplicationUtils.getNumStringRandom(6));
                 count = userMapper.insert(user);

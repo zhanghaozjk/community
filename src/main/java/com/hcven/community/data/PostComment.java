@@ -3,6 +3,7 @@ package com.hcven.community.data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @since 2019-05-13
  */
 @Document(collection = "post_comment")
-public class PostComment {
+public class PostComment implements Serializable {
     @Id
     private String id;
 

@@ -1,6 +1,8 @@
 package com.hcven.community.data;
 
-public class UserRole {
+import java.io.Serializable;
+
+public class UserRole implements Serializable {
     private Long id;
 
     private String role;

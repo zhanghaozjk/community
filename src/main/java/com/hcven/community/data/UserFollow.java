@@ -1,6 +1,8 @@
 package com.hcven.community.data;
 
-public class UserFollow {
+import java.io.Serializable;
+
+public class UserFollow implements Serializable {
     private Long userId;
 
     private String following;

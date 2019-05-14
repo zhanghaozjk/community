@@ -1,8 +1,9 @@
 package com.hcven.community.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Post {
+public class Post implements Serializable {
     private Long id;
 
     private Date date;

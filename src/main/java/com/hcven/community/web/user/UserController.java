@@ -1,11 +1,13 @@
 package com.hcven.community.web.user;
 
+import com.hcven.community.data.Comment;
 import com.hcven.community.data.common.CommonRes;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.service.PostService;
 import com.hcven.community.service.UserService;
 import com.hcven.community.vo.EmailVO;
 import com.hcven.community.vo.RegistVO;
+import com.hcven.community.vo.UserInformationVO;
 import com.hcven.system.exception.ServerException;
 import com.hcven.system.exception.UnauthorizedException;
 import com.hcven.utils.JWTUtil;
@@ -17,7 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -137,6 +141,25 @@ public class UserController {
         }
     }
 
+    @PutMapping(value = UserApiConsts.COMMUNITY_API_USER_INFORMATION)
+    @RequiresAuthentication
+    public CommonRes userInformationUpdate(@RequestBody UserInformationVO informationVO) {
+        if (informationVO == null) {
+            return CommonRes.message("requestBody Error");
+        } else {
+            Map<String, Object> data = new HashMap<>(4);
+            Boolean success = userService.userInformationUpdate(informationVO);
+            data.put("success", success);
+            return CommonRes.retOk(data);
+        }
+    }
 
-
+    @GetMapping(value = UserApiConsts.COMMUNITY_API_USER_INFORMATION)
+    @RequiresAuthentication
+    public CommonRes userInformationGet(@RequestParam(value = "username", required = false) String username) {
+        Map<String, Object> data = new HashMap<>(4);
+        UserInformationVO informationVO = userService.userInformationGet(username);
+        data.put("userInformationVO", informationVO);
+        return CommonRes.retOk(data);
+    }
 }
