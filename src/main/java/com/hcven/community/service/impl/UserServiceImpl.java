@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.getUserByUsername(SessionUtils.getUsername());
         if (user != null) {
-            if (StringUtils.isEmpty(informationVO.getNickname())) {
+            if (!StringUtils.isEmpty(informationVO.getNickname())) {
                 updateNickname(user, informationVO.getNickname());
             }
             UserTag userTag = userTagMapper.selectByUserId(user.getId());
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
             if (informationVO.getOtherWeight() != null && informationVO.getOtherWeight() != 0) {
                 userTag.setOtherWeight(informationVO.getOtherWeight());
             } else {
-                userTag.setOtherWeight(50);
+                userTag.setOtherWeight(0);
             }
             userTagMapper.updateByPrimaryKeySelective(userTag);
             return true;

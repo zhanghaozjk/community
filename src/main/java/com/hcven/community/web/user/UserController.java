@@ -143,12 +143,12 @@ public class UserController {
 
     @PutMapping(value = UserApiConsts.COMMUNITY_API_USER_INFORMATION)
     @RequiresAuthentication
-    public CommonRes userInformationUpdate(@RequestBody UserInformationVO informationVO) {
-        if (informationVO == null) {
+    public CommonRes userInformationUpdate(@RequestBody UserInformationVO userInformationVO) {
+        if (userInformationVO == null) {
             return CommonRes.message("requestBody Error");
         } else {
             Map<String, Object> data = new HashMap<>(4);
-            Boolean success = userService.userInformationUpdate(informationVO);
+            Boolean success = userService.userInformationUpdate(userInformationVO);
             data.put("success", success);
             return CommonRes.retOk(data);
         }
