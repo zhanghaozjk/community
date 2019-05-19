@@ -9,9 +9,10 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="images" jdbcType="VARCHAR" property="images" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, date, username, unVisible, content, images, status
+    id, date, username, unVisible, content, images, status, location
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -51,10 +52,10 @@
   <insert id="insert" parameterType="com.hcven.community.data.Post" useGeneratedKeys="true" keyProperty="id">
     insert into post (id, date, username,
       unVisible, content, images,
-      status)
+      status, location)
     values (#{id,jdbcType=BIGINT}, #{date,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
       #{unVisible,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR},
-      #{status,jdbcType=INTEGER})
+      #{status,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hcven.community.data.Post">
     insert into post
@@ -80,6 +81,9 @@
       <if test="status != null">
         status,
       </if>
+      <if test="location != null">
+        location
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -102,6 +106,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -126,6 +133,9 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="location != null">
+        location = #{location,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -136,7 +146,8 @@
       unVisible = #{unVisible,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       images = #{images,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

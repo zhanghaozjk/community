@@ -29,6 +29,9 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public void createPostLike(PostLike postLike) {
+        if (postLike.getUserId() == null) {
+            postLike.setUserId(new ArrayList<>());
+        }
         mongoTemplate.save(postLike);
     }
 
@@ -54,9 +57,12 @@ public class PostDAOImpl implements PostDAO {
     @Override
     public Integer countPostLike(Long postId) {
         Query query = new Query((Criteria.where("postId")).is(postId));
+        createPostLikeIfNotExistsRecord(postId);
         PostLike postLike = mongoTemplate.findOne(query, PostLike.class);
         if (postLike != null) {
-            return postLike.getUserId().size();
+            if (postLike.getUserId() != null) {
+                return postLike.getUserId().size();
+            }
         }
         return 0;
     }
@@ -64,7 +70,7 @@ public class PostDAOImpl implements PostDAO {
     @Override
     public Boolean userLikePost(Long postId, Long userId) {
         Query query = new Query(Criteria.where("postId").is(postId).
-                andOperator(Criteria.where("userID").is(userId)));
+                andOperator(Criteria.where("userId").all(userId)));
         PostLike postLike = mongoTemplate.findOne(query, PostLike.class);
         return postLike != null;
     }

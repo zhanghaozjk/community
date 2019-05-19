@@ -50,6 +50,13 @@ public interface PostService {
     Boolean userLikePost(Long postId);
 
     /**
+     * 用户取消点赞
+     * @param postId
+     * @return
+     */
+    Boolean userUnlikePost(Long postId);
+
+    /**
      * 获得带有id的所有comment
      * @param postId postId
      * @return

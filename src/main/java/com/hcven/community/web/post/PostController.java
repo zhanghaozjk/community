@@ -76,6 +76,14 @@ public class PostController {
         return CommonRes.retOk(data);
     }
 
+    @PostMapping(value = PostApiConsts.COMMUNITY_API_POST_UNLIKE_POST)
+    @RequiresAuthentication
+    public CommonRes unlikePost(@RequestParam("id")Long postId) {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("success", postService.userUnlikePost(postId));
+        return CommonRes.retOk(data);
+    }
+
     @GetMapping(value = PostApiConsts.COMMUNITY_API_POST_COMMENT_GET)
     @RequiresAuthentication
     public CommonRes getComment(@PathVariable(value = "id") Long postId) {

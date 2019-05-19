@@ -18,6 +18,16 @@ public class Post implements Serializable {
 
     private Integer status;
 
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Long getId() {
         return id;
     }

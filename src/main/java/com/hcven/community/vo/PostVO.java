@@ -36,6 +36,25 @@ public class PostVO {
      * 状态 0-delete 1-normal
      */
     private Integer status;
+    /**
+     * 是否点赞
+     */
+    private Boolean likePost;
+
+    /**
+     * 评论数
+     */
+    private Integer commentCount;
+
+    /**
+     * 点赞数
+     */
+    private Integer likeCount;
+
+    /**
+     * 发送位置
+     */
+    private String location;
 
     public Long getId() {
         return id;
@@ -91,5 +110,37 @@ public class PostVO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Boolean getLikePost() {
+        return likePost;
+    }
+
+    public void setLikePost(Boolean likePost) {
+        this.likePost = likePost;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

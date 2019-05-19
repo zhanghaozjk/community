@@ -64,6 +64,7 @@ public class PostServiceImpl implements PostService {
         params.put("username", username);
         params.put("status", PostStatus.NORMAL);
         List<Post> postDOs = postMapper.listPost(params);
+        UserSecureData user = userService.getUser(SessionUtils.getUsername());
         try {
             postDOs.forEach(post -> {
                 PostVO postVO = convertPost2PostVO(post);
@@ -71,6 +72,9 @@ public class PostServiceImpl implements PostService {
                     if (post.getUsername() != null) {
                         postVO.setUserVO(postGetUserDetail(post.getUsername()));
                     }
+                    postVO.setLikePost(postDAO.userLikePost(post.getId(), user.getId()));
+                    postVO.setCommentCount(postDAO.countPostComment(post.getId()));
+                    postVO.setLikeCount(postDAO.countPostLike(post.getId()));
                 }
                 posts.add(postVO);
             });
@@ -161,6 +165,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Boolean userUnlikePost(Long postId) {
+        UserSecureData user = userService.getUser(SessionUtils.getUsername());
+        try {
+            postDAO.removePostLike(postId, user.getId());
+        } catch (Exception e) {
+            logger.error("user " + user.getUsername() + " unlike post error " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public PostComment getPostComment(Long postId) {
         PostComment postComment = postDAO.getPostComment(postId);
         // 更新一遍nickname
@@ -210,6 +226,7 @@ public class PostServiceImpl implements PostService {
         postVO.setId(post.getId());
         postVO.setContent(post.getContent());;
         postVO.setDate(ApplicationUtils.getYMD(post.getDate()));
+        postVO.setLocation(post.getLocation());
         return postVO;
     }
 
@@ -224,6 +241,7 @@ public class PostServiceImpl implements PostService {
         // 前端不传date || update post
         post.setDate(date == null ? new Date(System.currentTimeMillis()) : date);
         post.setUsername(username);
+        post.setLocation(postVO.getLocation());
         return post;
     }
 }
