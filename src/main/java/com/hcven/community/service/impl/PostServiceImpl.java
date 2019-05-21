@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostVO> listPost(Long start, Integer count, String username) {
+    public List<PostVO> listPost(Long start, Integer count, String username, Boolean system) {
         List<PostVO> posts = new ArrayList<>();
 
         Map<String, Object> params = new HashMap<>(8);
@@ -64,7 +64,13 @@ public class PostServiceImpl implements PostService {
         params.put("username", username);
         params.put("status", PostStatus.NORMAL);
         List<Post> postDOs = postMapper.listPost(params);
-        UserSecureData user = userService.getUser(SessionUtils.getUsername());
+        UserSecureData user;
+        if (!system) {
+            user = userService.getUser(SessionUtils.getUsername());
+        } else {
+            user = new UserSecureData();
+            user.setId(1L);
+        }
         try {
             postDOs.forEach(post -> {
                 PostVO postVO = convertPost2PostVO(post);

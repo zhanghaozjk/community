@@ -2,7 +2,6 @@ package com.hcven.community.dao.impl;
 
 import com.hcven.community.dao.PostDAO;
 import com.hcven.community.data.Comment;
-import com.hcven.community.data.Post;
 import com.hcven.community.data.PostComment;
 import com.hcven.community.data.PostLike;
 import org.springframework.beans.factory.annotation.Autowired;

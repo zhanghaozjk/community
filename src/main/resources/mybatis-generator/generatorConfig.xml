@@ -24,7 +24,7 @@
         <javaClientGenerator targetPackage="com.hcven.community.mapper"
                              targetProject="src/main/java" type="XMLMAPPER"/>
 
-        <!--<table schema="community" tableName="user_tag"-->
+        <!--<table schema="community" tableName="post_recommend"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false">-->

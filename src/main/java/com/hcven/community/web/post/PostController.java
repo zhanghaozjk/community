@@ -42,7 +42,7 @@ public class PostController {
                               @RequestParam(value = "username", required = false) String username) {
         CommonRes res = CommonRes.retOk();
         Map<String, Object> map = new HashMap<>(4);
-        map.put("postVoList", postService.listPost(start, count, username));
+        map.put("postVoList", postService.listPost(start, count, username, false));
         map.put("count", postService.countPost(username));
         res.setData(map);
         return res;

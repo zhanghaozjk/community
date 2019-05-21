@@ -1,5 +1,6 @@
 package com.hcven.community.service;
 
+import com.hcven.community.data.Post;
 import com.hcven.community.data.PostComment;
 import com.hcven.community.vo.PostVO;
 
@@ -17,9 +18,10 @@ public interface PostService {
      * @param start
      * @param count
      * @param username
+     * @param system 是否为系统访问
      * @return
      */
-    List<PostVO> listPost(Long start, Integer count, String username);
+    List<PostVO> listPost(Long start, Integer count, String username, Boolean system);
 
     /**
      * list查询的时候，返回总数来分页

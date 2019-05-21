@@ -11,6 +11,7 @@ public class UserApiConsts {
         public static final Integer USER_NOT_IN_USE = 2;
     }
 
+    public static final String COMMUNITY_EXPORT_API_CHECK_SUCCESS = "/community/export/api/check/success";
     public static final String COMMUNITY_EXPORT_API_EMAIL_CHECK = "/community/export/api/email/check";
     public static final String COMMUNITY_EXPORT_API_USER_LOGIN = "/community/export/api/user/login";
     public static final String COMMUNITY_EXPORT_API_USER_TOKEN_UPDATE = "/community/export/api/user/token/update";

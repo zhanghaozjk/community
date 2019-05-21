@@ -4,6 +4,7 @@ import com.hcven.system.entity.Mail;
 import com.hcven.core.constant.MailConstant;
 import com.hcven.community.web.mail.MailService;
 import com.hcven.utils.UploadActionUtil;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import org.slf4j.Logger;
@@ -134,9 +135,9 @@ public class MailServiceImpl implements MailService {
         mailSender.send(message);
     }
 
-    private static freemarker.template.Configuration getConfiguration() throws IOException {
-        freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_23);
-        cfg.setDirectoryForTemplateLoading(new File(MailConstant.TEMPLATE_PATH));
+    private Configuration getConfiguration() {
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+        cfg.setClassForTemplateLoading(this.getClass(), "/templates/mail");
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
         return cfg;

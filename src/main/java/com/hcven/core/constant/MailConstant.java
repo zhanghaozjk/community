@@ -13,7 +13,7 @@ public class MailConstant {
     /**
      * 模板存放的路径
      */
-    public static final String TEMPLATE_PATH = "src/main/resources/templates/mail/";
+    public static final String TEMPLATE_PATH = "templates/mail/";
 
     /**
      * 注册邮件主题

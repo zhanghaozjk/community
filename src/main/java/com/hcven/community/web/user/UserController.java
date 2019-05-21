@@ -162,4 +162,9 @@ public class UserController {
         data.put("userInformationVO", informationVO);
         return CommonRes.retOk(data);
     }
+
+    @GetMapping(value = UserApiConsts.COMMUNITY_EXPORT_API_CHECK_SUCCESS)
+    public CommonRes checkSuccess() {
+        return CommonRes.retOk("success");
+    }
 }
