@@ -20,10 +20,8 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.hcven.community.data.UserRole">
-    insert into user_role (id, role, permission
-      )
-    values (#{id,jdbcType=BIGINT}, #{role,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}
-      )
+    insert into user_role (id, role, permission)
+    values (#{id,jdbcType=BIGINT}, #{role,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hcven.community.data.UserRole">
     insert into user_role

@@ -72,4 +72,12 @@ public interface PostService {
      * @return 成功 失败
      */
     Boolean addPostComment(Long postId, String content);
+
+    /**
+     * 热门推荐
+     * @param start
+     * @param count
+     * @return
+     */
+    List<PostVO> listRecommendPost(Long start, Integer count);
 }

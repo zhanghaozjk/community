@@ -1,7 +1,6 @@
 package com.hcven.community.service.impl;
 
 import com.hcven.community.algorithm.CoolingLaw;
-import com.hcven.community.data.Post;
 import com.hcven.community.data.PostRecommend;
 import com.hcven.community.mapper.PostRecommendMapper;
 import com.hcven.community.service.PostRecommendService;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhanghao
@@ -23,7 +23,8 @@ public class PostRecommendServiceImpl implements PostRecommendService {
 
     private final PostRecommendMapper postRecommendMapper;
 
-    private final PostService postService;
+    @Autowired
+    private PostService postService;
 
     private static final Integer QUERY_COUNT = 20;
 
@@ -32,9 +33,7 @@ public class PostRecommendServiceImpl implements PostRecommendService {
     private static final Double BASE_SCORE = 50D;
 
     @Autowired
-    public PostRecommendServiceImpl(PostRecommendMapper postRecommendMapper, PostService postService) {this.postRecommendMapper = postRecommendMapper;
-        this.postService = postService;
-    }
+    public PostRecommendServiceImpl(PostRecommendMapper postRecommendMapper) {this.postRecommendMapper = postRecommendMapper;}
 
     @Override
     public void insertOrUpdateRecommend() {
@@ -53,6 +52,11 @@ public class PostRecommendServiceImpl implements PostRecommendService {
                 updatePostRecommend(postRecommend, postVO);
             }
         });
+    }
+
+    @Override
+    public List<Long> getHotPostIds(Map<String, Object> params) {
+        return postRecommendMapper.listHotPost(params);
     }
 
     /**

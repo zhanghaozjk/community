@@ -7,6 +7,7 @@ import com.hcven.community.data.PostComment;
 import com.hcven.community.data.PostLike;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.mapper.PostMapper;
+import com.hcven.community.service.PostRecommendService;
 import com.hcven.community.service.PostService;
 import com.hcven.community.service.UserService;
 import com.hcven.community.vo.PostVO;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,11 +44,13 @@ public class PostServiceImpl implements PostService {
 
     private final PostDAO postDAO;
 
+    private final PostRecommendService postRecommendService;
 
     @Autowired
-    public PostServiceImpl(PostMapper postMapper, UserService userService, PostDAO postDAO) {this.postMapper = postMapper;
+    public PostServiceImpl(PostMapper postMapper, UserService userService, PostDAO postDAO, PostRecommendService postRecommendService) {this.postMapper = postMapper;
         this.userService = userService;
         this.postDAO = postDAO;
+        this.postRecommendService = postRecommendService;
     }
 
     static class PostStatus {
@@ -209,6 +213,39 @@ public class PostServiceImpl implements PostService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<PostVO> listRecommendPost(Long start, Integer count) {
+        Map<String, Object> params = new HashMap<>(4);
+        params.put("start", start == null ? 0L : start);
+        params.put("count", count == null ? 20 : count);
+        List<Long> postIds = postRecommendService.getHotPostIds(params);
+        List<Post> posts = null;
+        if (!CollectionUtils.isEmpty(postIds)) {
+            posts = postMapper.listByIds(postIds);
+        }
+        UserSecureData user = userService.getUser(SessionUtils.getUsername());
+        List<PostVO> postVOList = new ArrayList<>();
+        try {
+            if (!CollectionUtils.isEmpty(posts)) {
+                posts.forEach(post -> {
+                    PostVO postVO = convertPost2PostVO(post);
+                    if (postVO != null) {
+                        if (post.getUsername() != null) {
+                            postVO.setUserVO(postGetUserDetail(post.getUsername()));
+                        }
+                        postVO.setLikePost(postDAO.userLikePost(post.getId(), user.getId()));
+                        postVO.setCommentCount(postDAO.countPostComment(post.getId()));
+                        postVO.setLikeCount(postDAO.countPostLike(post.getId()));
+                    }
+                    postVOList.add(postVO);
+                });
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return postVOList;
     }
 
     private UserVO postGetUserDetail(String username) {

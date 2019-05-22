@@ -2,6 +2,9 @@ package com.hcven.community.mapper;
 
 import com.hcven.community.data.PostRecommend;
 
+import java.util.List;
+import java.util.Map;
+
 public interface PostRecommendMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -18,4 +21,6 @@ public interface PostRecommendMapper {
     int updateByPrimaryKey(PostRecommend record);
 
     Double averageScore();
+
+    List<Long> listHotPost(Map<String, Object> params);
 }

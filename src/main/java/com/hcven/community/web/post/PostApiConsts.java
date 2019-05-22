@@ -12,4 +12,5 @@ public class PostApiConsts {
     public static final String COMMUNITY_API_POST_UNLIKE_POST = "/community/api/post/unlike/post";
     public static final String COMMUNITY_API_POST_COMMENT_GET = "/community/api/post/comment/get/{id}";
     public static final String COMMUNITY_API_POST_COMMENT_ADD = "/community/api/post/comment/add";
+    public static final String COMMUNITY_API_POST_ALL_HOT = "/community/api/post/all/hot";
 }

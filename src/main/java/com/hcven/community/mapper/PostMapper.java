@@ -1,9 +1,6 @@
 package com.hcven.community.mapper;
 
 import com.hcven.community.data.Post;
-import org.apache.ibatis.annotations.Param;
-
-import javax.naming.ldap.HasControls;
 import java.util.List;
 import java.util.Map;
 
@@ -34,4 +31,6 @@ public interface PostMapper {
      * @return count
      */
     Integer countPost(Map<String, Object> params);
+
+    List<Post> listByIds(List<Long> postIds);
 }

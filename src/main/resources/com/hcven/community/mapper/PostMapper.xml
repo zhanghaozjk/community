@@ -20,6 +20,20 @@
     from post
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="listByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from post
+    where id in 
+    <foreach collection="list" item="postId" separator="," open="(" close=")">
+      #{postId,jdbcType=BIGINT}
+    </foreach>
+    order by field(id,
+    <foreach collection="list" item="postId" separator=",">
+      #{postId,jdbcType=BIGINT}
+    </foreach>
+    )
+  </select>
   <select id="listPost" resultMap="BaseResultMap" parameterType="HashMap">
     select
     <include refid="Base_Column_List" />

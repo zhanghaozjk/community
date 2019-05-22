@@ -19,6 +19,12 @@
     from post_recommend
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="listHotPost" resultType="java.lang.Long" parameterType="HashMap">
+    select postId
+    from post_recommend
+    order by `score` desc
+    limit #{start,jdbcType=BIGINT}, #{count,jdbcType=INTEGER}
+  </select>
   <select id="selectByPostId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />

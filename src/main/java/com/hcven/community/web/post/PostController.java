@@ -1,6 +1,5 @@
 package com.hcven.community.web.post;
 
-import com.hcven.community.data.Comment;
 import com.hcven.community.data.common.CommonRes;
 import com.hcven.community.service.PostService;
 import com.hcven.community.vo.PostVO;
@@ -46,6 +45,16 @@ public class PostController {
         map.put("count", postService.countPost(username));
         res.setData(map);
         return res;
+    }
+
+    @PostMapping(value = PostApiConsts.COMMUNITY_API_POST_ALL_HOT)
+    @RequiresAuthentication
+    public CommonRes getPostsHot(@RequestParam(value = "start", required = false) Long start,
+                              @RequestParam(value = "count", required = false) Integer count) {
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("postVoList", postService.listRecommendPost(start, count));
+        map.put("count", postService.countPost(null));
+        return CommonRes.retOk(map);
     }
 
     @PutMapping(value = PostApiConsts.COMMUNITY_API_POST_PUT_NEW_POST)
