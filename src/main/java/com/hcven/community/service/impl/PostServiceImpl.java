@@ -5,6 +5,8 @@ import com.hcven.community.data.Comment;
 import com.hcven.community.data.Post;
 import com.hcven.community.data.PostComment;
 import com.hcven.community.data.PostLike;
+import com.hcven.community.data.PostTag;
+import com.hcven.community.data.UserTag;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.mapper.PostMapper;
 import com.hcven.community.service.PostRecommendService;
@@ -58,10 +60,13 @@ public class PostServiceImpl implements PostService {
         static Integer DELETE = 0;
     }
 
+    static class PostTagType {
+        static String CAT = "cat";
+        static String DOG = "dog";
+    }
+
     @Override
     public List<PostVO> listPost(Long start, Integer count, String username, Boolean system) {
-        List<PostVO> posts = new ArrayList<>();
-
         Map<String, Object> params = new HashMap<>(8);
         params.put("start", start == null ? 0L : start);
         params.put("count", count == null ? 20 : count);
@@ -75,24 +80,7 @@ public class PostServiceImpl implements PostService {
             user = new UserSecureData();
             user.setId(1L);
         }
-        try {
-            postDOs.forEach(post -> {
-                PostVO postVO = convertPost2PostVO(post);
-                if (postVO != null) {
-                    if (post.getUsername() != null) {
-                        postVO.setUserVO(postGetUserDetail(post.getUsername()));
-                    }
-                    postVO.setLikePost(postDAO.userLikePost(post.getId(), user.getId()));
-                    postVO.setCommentCount(postDAO.countPostComment(post.getId()));
-                    postVO.setLikeCount(postDAO.countPostLike(post.getId()));
-                }
-                posts.add(postVO);
-            });
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-
-        return posts;
+        return convertPostList2PostVOList(postDOs, user);
     }
 
     @Override
@@ -120,12 +108,16 @@ public class PostServiceImpl implements PostService {
             } else {
                 postMapper.insert(post);
                 PostLike postLike = new PostLike();
+                PostTag postTag = new PostTag();
                 postLike.setPostId(post.getId());
+                postTag.setPostId(post.getId());
+                postTag.setPostTag(postVO.getTags());
                 PostComment postComment = new PostComment();
                 postComment.setPostId(post.getId());
                 postComment.setComment(new ArrayList<>());
                 postDAO.createPostLike(postLike);
                 postDAO.createPostComment(postComment);
+                postDAO.createPostTag(postTag);
             }
         } catch (Exception e) {
             String message = String.format("User %s adding or updating a post error", username);
@@ -216,36 +208,63 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostVO> listRecommendPost(Long start, Integer count) {
+    public List<PostVO> listRecommendPost(String location, Long start, Integer count) {
         Map<String, Object> params = new HashMap<>(4);
         params.put("start", start == null ? 0L : start);
         params.put("count", count == null ? 20 : count);
-        List<Long> postIds = postRecommendService.getHotPostIds(params);
-        List<Post> posts = null;
-        if (!CollectionUtils.isEmpty(postIds)) {
-            posts = postMapper.listByIds(postIds);
-        }
+        params.put("location", location);
+        params.put("status", PostStatus.NORMAL);
+        List<Post> posts = postMapper.listByHot(params);
         UserSecureData user = userService.getUser(SessionUtils.getUsername());
-        List<PostVO> postVOList = new ArrayList<>();
-        try {
-            if (!CollectionUtils.isEmpty(posts)) {
-                posts.forEach(post -> {
-                    PostVO postVO = convertPost2PostVO(post);
-                    if (postVO != null) {
-                        if (post.getUsername() != null) {
-                            postVO.setUserVO(postGetUserDetail(post.getUsername()));
-                        }
-                        postVO.setLikePost(postDAO.userLikePost(post.getId(), user.getId()));
-                        postVO.setCommentCount(postDAO.countPostComment(post.getId()));
-                        postVO.setLikeCount(postDAO.countPostLike(post.getId()));
-                    }
-                    postVOList.add(postVO);
-                });
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
+        return convertPostList2PostVOList(posts, user);
+    }
+
+    @Override
+    public Integer countRecommendPost(String location) {
+        Map<String, Object> params = new HashMap<>(4);
+        if (location != null) {
+            params.put("location", location);
         }
-        return postVOList;
+        params.put("status", PostStatus.NORMAL);
+        return postMapper.countByHot(params);
+    }
+
+    @Override
+    public List<PostVO> getUserRecommend() {
+        UserSecureData user = userService.getUser(SessionUtils.getUsername());
+        UserTag userTag = userService.getUserTag(SessionUtils.getUsername());
+        int catCount = userTag.getCatWeight() / 5;
+        int dogCount = 20 - catCount;
+        List<Long> postIds = new ArrayList<>();
+
+        if (catCount > 0) {
+            List<PostTag> catTag = postDAO.getPostByRandom(PostTagType.CAT, catCount);
+            catTag.forEach(cat -> postIds.add(cat.getPostId()));
+        }
+        if (dogCount > 0) {
+            List<PostTag> dogTag = postDAO.getPostByRandom(PostTagType.DOG, dogCount);
+            dogTag.forEach(dog -> postIds.add(dog.getPostId()));
+        }
+        List<Post> posts = postMapper.listByIds(postIds);
+        return convertPostList2PostVOList(posts, user);
+    }
+
+    @Override
+    public void postTagInit() {
+        // todo destory
+        Map<String, Object> params = new HashMap<>(4);
+        params.put("start", 0);
+        params.put("count", 100);
+        List<Post> posts = postMapper.listPost(params);
+        posts.forEach(post -> {
+            List<String> tags = new ArrayList<>();
+            tags.add(post.getId() % 2 == 1 ? "cat" : "dog");
+            PostTag postTag = new PostTag();
+            postTag.setPostTag(tags);
+            postTag.setPostId(post.getId());
+            postDAO.createPostTag(postTag);
+        });
+
     }
 
     private UserVO postGetUserDetail(String username) {
@@ -286,5 +305,28 @@ public class PostServiceImpl implements PostService {
         post.setUsername(username);
         post.setLocation(postVO.getLocation());
         return post;
+    }
+
+    private List<PostVO> convertPostList2PostVOList(List<Post> posts, UserSecureData user) {
+        List<PostVO> postVOList = new ArrayList<>();
+        try {
+            if (!CollectionUtils.isEmpty(posts)) {
+                posts.forEach(post -> {
+                    PostVO postVO = convertPost2PostVO(post);
+                    if (postVO != null) {
+                        if (post.getUsername() != null) {
+                            postVO.setUserVO(postGetUserDetail(post.getUsername()));
+                        }
+                        postVO.setLikePost(postDAO.userLikePost(post.getId(), user.getId()));
+                        postVO.setCommentCount(postDAO.countPostComment(post.getId()));
+                        postVO.setLikeCount(postDAO.countPostLike(post.getId()));
+                    }
+                    postVOList.add(postVO);
+                });
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return postVOList;
     }
 }

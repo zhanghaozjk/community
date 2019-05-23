@@ -219,6 +219,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserTag getUserTag(String username) {
+        UserSecureData user = getUser(SessionUtils.getUsername());
+        UserTag userTag = null;
+        if (user != null) {
+            userTag = userTagMapper.selectByUserId(user.getId());
+            if (userTag == null) {
+                // 冷启动
+                userTag = insertUserTagIfNotExistsRecord(user.getId());
+            }
+        }
+        return userTag;
+    }
+
+    @Override
     public UserSecureData getUser(String username) {
         User user = userMapper.getUserByUsername(username);
         UserRole role = null;

@@ -3,6 +3,9 @@ package com.hcven.community.dao;
 import com.hcven.community.data.Comment;
 import com.hcven.community.data.PostComment;
 import com.hcven.community.data.PostLike;
+import com.hcven.community.data.PostTag;
+
+import java.util.List;
 
 /**
  * @author zhanghao
@@ -77,4 +80,32 @@ public interface PostDAO {
      * @return
      */
     PostComment getPostComment(Long postId);
+
+    /**
+     * 创建tag 新增一条post的时候调用
+     * @param postTag
+     */
+    void createPostTag(PostTag postTag);
+
+    /**
+     * 保存tag
+     * @param postId
+     * @param tag
+     */
+    void savePostTag(Long postId, String tag);
+
+    /**
+     * 通过postId获得post tag
+     * @param postId
+     * @return
+     */
+    PostTag getPostTagById(Long postId);
+
+    /**
+     * 通过tag获得postID
+     * @param tag
+     * @param count
+     * @return
+     */
+    List<PostTag> getPostByRandom(String tag, Integer count);
 }

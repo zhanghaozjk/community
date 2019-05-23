@@ -1,5 +1,7 @@
 package com.hcven.community.service;
 
+import com.hcven.community.data.PostTag;
+import com.hcven.community.data.UserTag;
 import com.hcven.community.dto.UserSecureData;
 import com.hcven.community.vo.MineUserVO;
 import com.hcven.community.vo.RegistVO;
@@ -82,4 +84,11 @@ public interface UserService {
      * @return
      */
     UserInformationVO userInformationGet(String username);
+
+    /**
+     * 获取用户tag
+     * @param username
+     * @return
+     */
+    UserTag getUserTag(String username);
 }

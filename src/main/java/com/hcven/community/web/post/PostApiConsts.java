@@ -13,4 +13,7 @@ public class PostApiConsts {
     public static final String COMMUNITY_API_POST_COMMENT_GET = "/community/api/post/comment/get/{id}";
     public static final String COMMUNITY_API_POST_COMMENT_ADD = "/community/api/post/comment/add";
     public static final String COMMUNITY_API_POST_ALL_HOT = "/community/api/post/all/hot";
+    public static final String COMMUNITY_API_POST_ALL_USER_RECOMMEND = "/community/api/post/all/user/recommend";
+    // todo 上线完删掉
+    public static final String COMMUNITY_PRIVATE_POST_TAG_INIT = "/community/private/post/tag/init";
 }

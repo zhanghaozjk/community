@@ -49,11 +49,12 @@ public class PostController {
 
     @PostMapping(value = PostApiConsts.COMMUNITY_API_POST_ALL_HOT)
     @RequiresAuthentication
-    public CommonRes getPostsHot(@RequestParam(value = "start", required = false) Long start,
-                              @RequestParam(value = "count", required = false) Integer count) {
+    public CommonRes getPostsHot(@RequestParam(value = "location", required = false) String location,
+                                 @RequestParam(value = "start", required = false) Long start,
+                                 @RequestParam(value = "count", required = false) Integer count) {
         Map<String, Object> map = new HashMap<>(4);
-        map.put("postVoList", postService.listRecommendPost(start, count));
-        map.put("count", postService.countPost(null));
+        map.put("postVoList", postService.listRecommendPost(location, start, count));
+        map.put("count", postService.countRecommendPost(location));
         return CommonRes.retOk(map);
     }
 
@@ -67,6 +68,14 @@ public class PostController {
         } catch (ServerException e) {
             data.put("success", false);
         }
+        return CommonRes.retOk(data);
+    }
+
+    @PostMapping(value = PostApiConsts.COMMUNITY_API_POST_ALL_USER_RECOMMEND)
+    @RequiresAuthentication
+    public CommonRes getUserRecommend() {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("postVoList", postService.getUserRecommend());
         return CommonRes.retOk(data);
     }
 
@@ -108,5 +117,15 @@ public class PostController {
         Map<String, Object> data = new HashMap<>(4);
         data.put("success", success);
         return CommonRes.retOk(data);
+    }
+
+
+    @PostMapping(value = PostApiConsts.COMMUNITY_PRIVATE_POST_TAG_INIT)
+    public CommonRes postTagInit(@RequestParam("postTag")Boolean truth) {
+        if (truth) {
+            postService.postTagInit();
+            return CommonRes.retOk();
+        }
+        return CommonRes.retOk("something wrong");
     }
 }

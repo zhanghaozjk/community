@@ -4,15 +4,22 @@ import com.hcven.community.dao.PostDAO;
 import com.hcven.community.data.Comment;
 import com.hcven.community.data.PostComment;
 import com.hcven.community.data.PostLike;
+import com.hcven.community.data.PostTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.SampleOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 
 /**
  * @author zhanghao
@@ -115,6 +122,39 @@ public class PostDAOImpl implements PostDAO {
         createPostCommentIfNotExistsRecord(postId);
         Query query = new Query((Criteria.where("postId").is(postId)));
         return mongoTemplate.findOne(query, PostComment.class);
+    }
+
+    @Override
+    public void createPostTag(PostTag postTag) {
+        if (postTag.getPostTag() == null) {
+            postTag.setPostTag(new ArrayList<>());
+        }
+        mongoTemplate.save(postTag);
+    }
+
+    @Override
+    public void savePostTag(Long postId, String postTag) {
+        if (postId != null && !StringUtils.isEmpty(postTag)) {
+            Query query = new Query(Criteria.where("postId").is(postId));
+            Update update = new Update();
+            update.push("postTag", postTag);
+            mongoTemplate.updateFirst(query, update, PostTag.class);
+        }
+    }
+
+    @Override
+    public PostTag getPostTagById(Long postId) {
+        Query query = new Query(Criteria.where("postId").is(postId));
+        return mongoTemplate.findOne(query, PostTag.class);
+    }
+
+    @Override
+    public List<PostTag> getPostByRandom(String tag, Integer count) {
+        Aggregation agg = newAggregation(
+                Aggregation.match(Criteria.where("postTag").all(tag)),
+                Aggregation.sample(count));
+        AggregationResults<PostTag> postTags = mongoTemplate.aggregate(agg, "post_tag", PostTag.class);
+        return postTags.getMappedResults();
     }
 
     private Query getPostCommentQuery(Long postId) {

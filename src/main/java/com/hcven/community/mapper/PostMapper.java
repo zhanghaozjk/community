@@ -32,5 +32,24 @@ public interface PostMapper {
      */
     Integer countPost(Map<String, Object> params);
 
+    /**
+     * 通过postId查询post
+     * @param postIds
+     * @return
+     */
     List<Post> listByIds(List<Long> postIds);
+
+    /**
+     * 通过地理位置查询推荐话题
+     * @param params location start count
+     * @return
+     */
+    List<Post> listByHot(Map<String, Object> params);
+
+    /**
+     * 通过地理位置查询推荐话题count
+     * @param params location start count
+     * @return
+     */
+    Integer countByHot(Map<String, Object> params);
 }

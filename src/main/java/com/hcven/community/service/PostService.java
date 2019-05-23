@@ -2,6 +2,7 @@ package com.hcven.community.service;
 
 import com.hcven.community.data.Post;
 import com.hcven.community.data.PostComment;
+import com.hcven.community.data.PostTag;
 import com.hcven.community.vo.PostVO;
 
 import java.util.List;
@@ -79,5 +80,21 @@ public interface PostService {
      * @param count
      * @return
      */
-    List<PostVO> listRecommendPost(Long start, Integer count);
+    List<PostVO> listRecommendPost(String location, Long start, Integer count);
+
+    /**
+     * 热门推荐计数
+     * @Param location
+     * @return
+     */
+    Integer countRecommendPost(String location);
+
+    /**
+     * 为我推荐，一次获取二十条
+     * @return
+     */
+    List<PostVO> getUserRecommend();
+
+    //todo 上线完删掉
+    void postTagInit();
 }

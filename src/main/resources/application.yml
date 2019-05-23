@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prd
 
 logging:
   #  config: ./log4j2-spring.xml

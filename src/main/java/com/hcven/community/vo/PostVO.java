@@ -56,6 +56,11 @@ public class PostVO {
      */
     private String location;
 
+    /**
+     * tags
+     */
+    private List<String> tags;
+
     public Long getId() {
         return id;
     }
@@ -142,5 +147,13 @@ public class PostVO {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }
