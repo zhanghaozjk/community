@@ -1,8 +1,10 @@
 package com.hcven.community.mapper;
 
 import com.hcven.community.data.UserTag;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface UserTagMapper {
     int deleteByPrimaryKey(Integer id);
 

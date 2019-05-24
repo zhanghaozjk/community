@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author zhanghao
  */
 @SpringBootApplication
-@MapperScan("com.hcven.community.mapper")
 @EnableScheduling
 public class CommunityApplication {
 

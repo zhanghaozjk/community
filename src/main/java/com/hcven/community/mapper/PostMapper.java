@@ -1,9 +1,12 @@
 package com.hcven.community.mapper;
 
 import com.hcven.community.data.Post;
+import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 import java.util.Map;
 
+@Mapper
 public interface PostMapper {
     int deleteByPrimaryKey(Long id);
 

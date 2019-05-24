@@ -1,7 +1,9 @@
 package com.hcven.community.mapper;
 
 import com.hcven.community.data.User;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
 
