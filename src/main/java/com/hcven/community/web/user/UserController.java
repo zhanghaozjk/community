@@ -108,14 +108,14 @@ public class UserController {
             }
         }
     }
-
-    @PostMapping(value = UserApiConsts.COMMUNITY_API_USER_MINE_DETAIL_GET)
-    @RequiresAuthentication
-    public CommonRes userDetails(@RequestParam(value = "username", required = false)String username) {
-        Map<String, Object> data = new HashMap<>(4);
-        data.put("mineUserVO", userService.getMineUserDetail(username));
-        return CommonRes.retOk(data);
-    }
+//
+//    @PostMapping(value = UserApiConsts.COMMUNITY_API_USER_MINE_DETAIL_GET)
+//    @RequiresAuthentication
+//    public CommonRes userDetails(@RequestParam(value = "username", required = false)String username) {
+//        Map<String, Object> data = new HashMap<>(4);
+//        data.put("mineUserVO", userService.getMineUserDetail(username));
+//        return CommonRes.retOk(data);
+//    }
 
     @PostMapping(value = UserApiConsts.COMMUNITY_EXPORT_API_USER_EMAIL_REGISTER_SEND_CODE)
     public CommonRes userEmailSendCode(@RequestBody RegistVO regist) {

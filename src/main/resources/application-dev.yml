@@ -10,7 +10,7 @@ spring:
   mail:
     host: smtp.exmail.qq.com
     username: service@hcven.cn
-    password: s2jCUR8QMNB5K5Qp
+    password: Mc7U8iJZYabnbuwFgi
     default-encoding: utf-8
     properties:
       mail:

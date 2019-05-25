@@ -3,6 +3,7 @@ package com.hcven.community.web.post;
 import com.hcven.community.data.common.CommonRes;
 import com.hcven.community.service.PostService;
 import com.hcven.community.vo.PostVO;
+import com.hcven.community.web.user.UserApiConsts;
 import com.hcven.system.exception.ServerException;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
@@ -68,6 +69,14 @@ public class PostController {
         } catch (ServerException e) {
             data.put("success", false);
         }
+        return CommonRes.retOk(data);
+    }
+
+    @PostMapping(value = PostApiConsts.COMMUNITY_API_POST_USER_INFORMATION)
+    @RequiresAuthentication
+    public CommonRes userDetails(@RequestParam(value = "username", required = false)String username) {
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("mineUserVO", postService.getMineUserDetail(username));
         return CommonRes.retOk(data);
     }
 

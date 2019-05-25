@@ -3,6 +3,7 @@ package com.hcven.community.service;
 import com.hcven.community.data.Post;
 import com.hcven.community.data.PostComment;
 import com.hcven.community.data.PostTag;
+import com.hcven.community.vo.MineUserVO;
 import com.hcven.community.vo.PostVO;
 
 import java.util.List;
@@ -94,6 +95,14 @@ public interface PostService {
      * @return
      */
     List<PostVO> getUserRecommend();
+
+
+    /**
+     * 查看用户详情页的信息
+     * @param username 用户名 为null则为查询自己
+     * @return
+     */
+    MineUserVO getMineUserDetail(String username);
 
     //todo 上线完删掉
     void postTagInit();

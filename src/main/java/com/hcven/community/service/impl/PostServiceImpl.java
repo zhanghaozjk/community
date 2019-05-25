@@ -12,6 +12,7 @@ import com.hcven.community.mapper.PostMapper;
 import com.hcven.community.service.PostRecommendService;
 import com.hcven.community.service.PostService;
 import com.hcven.community.service.UserService;
+import com.hcven.community.vo.MineUserVO;
 import com.hcven.community.vo.PostVO;
 import com.hcven.community.vo.UserVO;
 import com.hcven.system.exception.ServerException;
@@ -46,13 +47,10 @@ public class PostServiceImpl implements PostService {
 
     private final PostDAO postDAO;
 
-    private final PostRecommendService postRecommendService;
-
     @Autowired
-    public PostServiceImpl(PostMapper postMapper, UserService userService, PostDAO postDAO, PostRecommendService postRecommendService) {this.postMapper = postMapper;
+    public PostServiceImpl(PostMapper postMapper, UserService userService, PostDAO postDAO) {this.postMapper = postMapper;
         this.userService = userService;
         this.postDAO = postDAO;
-        this.postRecommendService = postRecommendService;
     }
 
     static class PostStatus {
@@ -152,6 +150,31 @@ public class PostServiceImpl implements PostService {
             map.put("success", true);
         }
         return map;
+    }
+
+
+    @Override
+    public MineUserVO getMineUserDetail(String username) {
+        if (username == null) {
+            username = SessionUtils.getUsername();
+        }
+        MineUserVO userVO = new MineUserVO();
+        UserSecureData user = userService.getUser(username);
+        // nickname
+        userVO.setNickname(user.getNickname());
+        Map<String, Object> postQueryMap = new HashMap<>(4);
+        postQueryMap.put("username", username);
+        postQueryMap.put("status", PostStatus.NORMAL);
+        Integer postCount = postMapper.countPost(postQueryMap);
+        // postCount
+        userVO.setPostCount(postCount);
+        // followers count
+        userVO.setFollowersCount(userService.getFollowerCount(user.getId()));
+        // following count
+        userVO.setFollowingCount(userService.getFollowingCount(user.getId()));
+        // todo description
+
+        return userVO;
     }
 
     @Override

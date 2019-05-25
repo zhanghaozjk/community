@@ -57,12 +57,6 @@ public interface UserService {
      */
     Map<String, Object> emailCodeVerify(RegistVO registVO);
 
-    /**
-     * 查看用户详情页的信息
-     * @param username 用户名 为null则为查询自己
-     * @return
-     */
-    MineUserVO getMineUserDetail(String username);
 
     /**
      * 通过id获取昵称
@@ -91,4 +85,18 @@ public interface UserService {
      * @return
      */
     UserTag getUserTag(String username);
+
+    /**
+     * 获取受关注id的count
+     * @param userId 被查询的用户id
+     * @return
+     */
+    Integer getFollowerCount(Long userId);
+
+    /**
+     * 获取正在关注id的count
+     * @param userId 被查询的用户id
+     * @return
+     */
+    Integer getFollowingCount(Long userId);
 }

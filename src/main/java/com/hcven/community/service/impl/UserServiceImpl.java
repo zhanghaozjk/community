@@ -44,17 +44,14 @@ public class UserServiceImpl implements UserService {
 
     private final MailService mailService;
 
-    private final PostMapper postMapper;
-
     private final UserFollowDAO userFollowDAO;
 
     private final UserTagMapper userTagMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, UserRoleMapper userRoleMapper, MailService mailService, PostMapper postMapper, UserFollowDAO userFollowDAO, UserTagMapper userTagMapper) {this.userMapper = userMapper;
+    public UserServiceImpl(UserMapper userMapper, UserRoleMapper userRoleMapper, MailService mailService, UserFollowDAO userFollowDAO, UserTagMapper userTagMapper) {this.userMapper = userMapper;
         this.userRoleMapper = userRoleMapper;
         this.mailService = mailService;
-        this.postMapper = postMapper;
         this.userFollowDAO = userFollowDAO;
         this.userTagMapper = userTagMapper;
     }
@@ -116,29 +113,6 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
-    @Override
-    public MineUserVO getMineUserDetail(String username) {
-        if (username == null) {
-            username = SessionUtils.getUsername();
-        }
-        MineUserVO userVO = new MineUserVO();
-        UserSecureData user = getUser(username);
-        // nickname
-        userVO.setNickname(user.getNickname());
-        Map<String, Object> postQueryMap = new HashMap<>(4);
-        postQueryMap.put("username", username);
-        postQueryMap.put("status", PostServiceImpl.PostStatus.NORMAL);
-        Integer postCount = postMapper.countPost(postQueryMap);
-        // postCount
-        userVO.setPostCount(postCount);
-        // followers count
-        userVO.setFollowersCount(userFollowDAO.getFollowerCount(user.getId()));
-        // following count
-        userVO.setFollowingCount(userFollowDAO.getFollowingCount(user.getId()));
-        // todo description
-
-        return userVO;
-    }
 
     @Override
     public String userGetNicknameByUserId(Long userId) {
@@ -148,6 +122,16 @@ public class UserServiceImpl implements UserService {
         } else {
             return "匿名用户";
         }
+    }
+
+    @Override
+    public Integer getFollowerCount(Long userId) {
+        return userFollowDAO.getFollowerCount(userId);
+    }
+
+    @Override
+    public Integer getFollowingCount(Long userId) {
+        return userFollowDAO.getFollowingCount(userId);
     }
 
     @Override
