@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--数据库驱动-->
+    <classPathEntry location="src/main/resources/jdk/mysql-connector-java-5.1.41.jar"
+           />
+    <context id="mysql" targetRuntime="MyBatis3">
+        <!-- 开启注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1/community?useUnicode=true"
+                        userId="root" password="zh1580"/>
+        <!--生成model的包名和位置-->
+        <javaModelGenerator targetPackage="com.com.hcven.community.data"
+                            targetProject="src/main/java"/>
+        <!--生成mapper文件的包名和位置-->
+        <sqlMapGenerator targetPackage="com.com.hcven.community.mapper"
+                         targetProject="src/main/resources"/>
+        <javaClientGenerator targetPackage="com.com.hcven.community.mapper"
+                             targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <!--<table schema="community" tableName="post_recommend"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="true"/>-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/community?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: zh1580
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  freemarker:
+    template-loader-path: classpath:/templates/
+    cache: false
+    prefer-file-system-access: false

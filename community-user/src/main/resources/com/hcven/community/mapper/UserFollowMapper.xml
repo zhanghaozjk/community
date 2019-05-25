@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hcven.community.mapper.UserFollowMapper" >
+  <resultMap id="BaseResultMap" type="com.hcven.community.data.UserFollow" >
+    <id column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="following" property="following" jdbcType="VARCHAR" />
+    <result column="followers" property="followers" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userId, following, followers
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_follow
+    where userId = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_follow
+    where userId = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hcven.community.data.UserFollow" >
+    insert into user_follow (userId, following, followers
+      )
+    values (#{userId,jdbcType=BIGINT}, #{following,jdbcType=VARCHAR}, #{followers,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hcven.community.data.UserFollow" >
+    insert into user_follow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="following != null" >
+        following,
+      </if>
+      <if test="followers != null" >
+        followers,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="following != null" >
+        #{following,jdbcType=VARCHAR},
+      </if>
+      <if test="followers != null" >
+        #{followers,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hcven.community.data.UserFollow" >
+    update user_follow
+    <set >
+      <if test="following != null" >
+        following = #{following,jdbcType=VARCHAR},
+      </if>
+      <if test="followers != null" >
+        followers = #{followers,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hcven.community.data.UserFollow" >
+    update user_follow
+    set following = #{following,jdbcType=VARCHAR},
+      followers = #{followers,jdbcType=VARCHAR}
+    where userId = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

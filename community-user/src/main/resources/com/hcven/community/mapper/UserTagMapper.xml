@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hcven.community.mapper.UserTagMapper" >
+  <resultMap id="BaseResultMap" type="com.hcven.community.data.UserTag" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="catWeight" property="catWeight" jdbcType="INTEGER" />
+    <result column="dogWeight" property="dogWeight" jdbcType="INTEGER" />
+    <result column="otherWeight" property="otherWeight" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, catWeight, dogWeight, otherWeight
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_tag
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from user_tag
+    where userId = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_tag
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hcven.community.data.UserTag" useGeneratedKeys="true" keyProperty="id">
+    insert into user_tag (id, userId, catWeight, 
+      dogWeight, otherWeight)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{catWeight,jdbcType=INTEGER}, 
+      #{dogWeight,jdbcType=INTEGER}, #{otherWeight,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hcven.community.data.UserTag" useGeneratedKeys="true" keyProperty="id">
+    insert into user_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="catWeight != null" >
+        catWeight,
+      </if>
+      <if test="dogWeight != null" >
+        dogWeight,
+      </if>
+      <if test="otherWeight != null" >
+        otherWeight,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="catWeight != null" >
+        #{catWeight,jdbcType=INTEGER},
+      </if>
+      <if test="dogWeight != null" >
+        #{dogWeight,jdbcType=INTEGER},
+      </if>
+      <if test="otherWeight != null" >
+        #{otherWeight,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hcven.community.data.UserTag" >
+    update user_tag
+    <set >
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="catWeight != null" >
+        catWeight = #{catWeight,jdbcType=INTEGER},
+      </if>
+      <if test="dogWeight != null" >
+        dogWeight = #{dogWeight,jdbcType=INTEGER},
+      </if>
+      <if test="otherWeight != null" >
+        otherWeight = #{otherWeight,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hcven.community.data.UserTag" >
+    update user_tag
+    set userId = #{userId,jdbcType=BIGINT},
+      catWeight = #{catWeight,jdbcType=INTEGER},
+      dogWeight = #{dogWeight,jdbcType=INTEGER},
+      otherWeight = #{otherWeight,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: prd
+  redis:
+    port: 6379
+    database: 0
+    host: 127.0.0.1
+
+logging:
+  #  config: ./log4j2-spring.xml
+  level:
+    com.hcven: trace
+
+mybatis:
+  configuration:
+    cache-enabled: true
+
+dubbo:
+  application:
+    name: community-dubbo # 消息者名字
+  registry:
+    address: redis://127.0.0.1:6379 # 注册中心地址
